@@ -1,7 +1,6 @@
-import { AnimatePresence, color, motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import tailwindColors from '../assets/tailwindColors'
-import { BookOpen, ChevronRight, Film, MessageCircle, TimerReset, Users } from 'lucide-react'
-import useAxios from '../hooks/useAxios'
+import { ChevronRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useGetProperties from '../hooks/useGetProperties'
@@ -12,11 +11,11 @@ export default function InfoCard({ type, data, loading }) {
 	const [current, setCurrent] = useState(null)
 	const [total, setTotal] = useState(null)
 
+	console.log(current, total)
+
 	const navigate = useNavigate()
 
-	const date = new Date(
-		`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`.replace(/-/g, '/')
-	).toISOString()
+	const date = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`
 
 	useEffect(() => {
 		if (data) {
