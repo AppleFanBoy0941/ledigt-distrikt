@@ -1,8 +1,15 @@
-import InfoCard from '../components/InfoCard'
+import InfoCard from './InfoCard'
 import useAxios from '../hooks/useAxios'
+import { useContext, useEffect } from 'react'
+import { UpdateContext } from '../contexts/UpdateProvider'
 
 export default function InfoCardList() {
-	const { data, loading } = useAxios('globalreports')
+	const { lastUpdate } = useContext(UpdateContext)
+	const { data, loading, getData } = useAxios('globalreports')
+
+	useEffect(() => {
+		getData()
+	}, [lastUpdate])
 
 	return (
 		<ul className='grid gap-4 mt-4 pb-8'>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import tailwindColors from '../assets/tailwindColors'
 import useGetProperties from '../hooks/useGetProperties'
-import InlineLoader from './loaders/InlineLoader'
+import InlineLoader from '../components/loaders/InlineLoader'
 
 export default function StatCard({ type, data, loading }) {
 	const colors = tailwindColors(type)
@@ -10,9 +10,7 @@ export default function StatCard({ type, data, loading }) {
 	const [current, setCurrent] = useState(null)
 	const [total, setTotal] = useState(null)
 
-	const date = new Date(
-		`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`.replace(/-/g, '/')
-	).toISOString()
+	const date = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`
 
 	useEffect(() => {
 		if (data) {

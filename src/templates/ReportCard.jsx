@@ -1,27 +1,13 @@
-import {
-	Clock1,
-	Clock2,
-	Clock3,
-	Clock4,
-	Clock5,
-	Clock6,
-	Clock7,
-	Clock8,
-	Clock9,
-	Clock10,
-	Clock11,
-	Clock12,
-	LogIn,
-} from 'lucide-react'
+import { Clock1, Clock2, Clock3, Clock4, Clock5, Clock6, Clock7, Clock8, Clock9, Clock10, Clock11, Clock12 } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
-import ReportInput from '../components/ReportInput'
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import debounce from 'lodash.debounce'
+import ReportInput from '../components/inputs/ReportInput'
+import { useContext } from 'react'
 import useAxios from '../hooks/useAxios'
 import { AuthContext } from '../contexts/AuthProvider'
 import useLocalStorage from '../hooks/useLocalStorage'
 import InlineLoader from '../components/loaders/InlineLoader'
 import { useNavigate } from 'react-router-dom'
+import { UpdateContext } from '../contexts/UpdateProvider'
 
 export default function ReportCard() {
 	const date = new Date()
@@ -33,28 +19,7 @@ export default function ReportCard() {
 	const [publications, setPublications] = useLocalStorage('publications', 0)
 	const [videos, setVideos] = useLocalStorage('videos', 0)
 
-	// const [report, setReport] = useState({
-	// 	hours: 0,
-	// 	conversations: 0,
-	// 	returnVisits: 0,
-	// 	publications: 0,
-	// 	videos: 0,
-	// })
-
-	// async function updateReport() {
-	// 	console.log('Hours: ' + report.hours)
-	// 	console.log('Conversations: ' + report.conversations)
-	// 	console.log('Return Visits: ' + report.returnVisits)
-	// 	console.log('Publications: ' + report.publications)
-	// 	console.log('Videos: ' + report.videos)
-	// }
-
-	// const debouncedUpdateReport = useMemo(() => debounce(updateReport, 1000), [report, setReport, updateReport])
-
-	// useEffect(() => {
-	// 	console.log(report)
-	// 	debouncedUpdateReport()
-	// }, [JSON.stringify(report)])
+	const { setLastUpdate } = useContext(UpdateContext)
 
 	const { auth } = useContext(AuthContext)
 
@@ -69,8 +34,6 @@ export default function ReportCard() {
 			date.getDate() +
 			'&createNewIfEmpty=true'
 	)
-
-	const navigate = useNavigate()
 
 	async function updateReport() {
 		try {
@@ -91,12 +54,22 @@ export default function ReportCard() {
 		setPublications(0)
 		setReturnVisits(0)
 		setVideos(0)
+
+		setLastUpdate(new Date().getTime())
 	}
 
 	const time = date.getMinutes() >= 30 ? date.getHours() + 1 : date.getHours()
 	const timeLeft = 24 - time
 
 	const clock = time === 0 ? 12 : time > 12 ? time - 12 : time
+
+	function reportHasChanged() {
+		const sum = hours + conversations + publications + returnVisits + videos
+
+		if (sum) return true
+
+		return false
+	}
 
 	return (
 		<div className='flex flex-col gap-4'>
@@ -192,8 +165,10 @@ export default function ReportCard() {
 					</div>
 				</div>
 			</motion.section>
-			<button
+			<motion.button
+				animate={{ opacity: reportHasChanged() ? 1 : 0.5 }}
 				onClick={updateReport}
+				disabled={!reportHasChanged()}
 				className='font-header font-bold bg-sky-400 grid place-items-center rounded-3xl p-4 shadow-xl shadow-sky-600/25 text-sky-50 h-14'
 			>
 				<AnimatePresence mode='popLayout'>
@@ -207,7 +182,7 @@ export default function ReportCard() {
 						</motion.p>
 					)}
 				</AnimatePresence>
-			</button>
+			</motion.button>
 		</div>
 	)
 }

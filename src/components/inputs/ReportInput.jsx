@@ -1,5 +1,5 @@
 import { Minus, Plus } from 'lucide-react'
-import tailwindColors from '../assets/tailwindColors'
+import tailwindColors from '../../assets/tailwindColors'
 import debounce from 'lodash.debounce'
 import { useState, useMemo, useCallback } from 'react'
 import { AnimatePresence, color, motion } from 'framer-motion'

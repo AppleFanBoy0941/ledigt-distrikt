@@ -1,11 +1,12 @@
 import { easeOut, motion } from 'framer-motion'
 
-export default function InlineLoader({ color }) {
+export default function InlineLoader({ color, small }) {
 	return (
 		<motion.div
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1, transition: { ease: 'easeOut', delay: 0.2 } }}
-			className='relative h-4 w-12 rounded-full overflow-hidden faded-mask'
+			exit={{ opacity: 0, scale: 0.7 }}
+			className={`relative ${small ? 'h-3 w-9' : 'h-4 w-12'} rounded-full overflow-hidden faded-mask`}
 		>
 			<motion.div
 				animate={{
@@ -18,7 +19,7 @@ export default function InlineLoader({ color }) {
 						duration: 1.2,
 					},
 				}}
-				className={`absolute h-4 w-4 rounded-full bg-white`}
+				className={`absolute ${small ? 'h-3 w-3' : 'h-4 w-4'} rounded-full bg-white`}
 			></motion.div>
 			<motion.div
 				animate={{
@@ -32,7 +33,7 @@ export default function InlineLoader({ color }) {
 						delay: 0.4,
 					},
 				}}
-				className={`absolute h-4 w-4 rounded-full bg-white`}
+				className={`absolute ${small ? 'h-3 w-3' : 'h-4 w-4'} rounded-full bg-white`}
 			></motion.div>
 			<motion.div
 				animate={{
@@ -46,7 +47,7 @@ export default function InlineLoader({ color }) {
 						delay: 0.8,
 					},
 				}}
-				className={`absolute h-4 w-4 rounded-full bg-white`}
+				className={`absolute ${small ? 'h-3 w-3' : 'h-4 w-4'} rounded-full bg-white`}
 			></motion.div>
 		</motion.div>
 	)

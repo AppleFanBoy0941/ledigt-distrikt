@@ -91,8 +91,10 @@ export default function useAxios(endpoint, noToken, fullUrl = false, noGet = fal
 
 		setLoading(true)
 
+		let response
+
 		try {
-			const response = await axios.post(
+			response = await axios.post(
 				fullUrl ? endpoint + additionalEndpoint : `${import.meta.env.VITE_API_BASE}/${endpoint}/${additionalEndpoint}`,
 				data,
 				{
@@ -106,7 +108,7 @@ export default function useAxios(endpoint, noToken, fullUrl = false, noGet = fal
 			if (noGet) {
 				setData(response.data)
 				setLoading(true)
-				return
+				return response.data
 			}
 			const newData = await getData()
 
@@ -116,7 +118,7 @@ export default function useAxios(endpoint, noToken, fullUrl = false, noGet = fal
 			setLoading(false)
 		}
 
-		return data
+		return response
 	}
 
 	async function patchData(data, additionalEndpoint = '') {

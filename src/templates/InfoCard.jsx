@@ -4,14 +4,13 @@ import { ChevronRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useGetProperties from '../hooks/useGetProperties'
+import InlineLoader from '../components/loaders/InlineLoader'
 
 export default function InfoCard({ type, data, loading }) {
 	const colors = tailwindColors(type)
 	const [info, setInfo] = useState(null)
 	const [current, setCurrent] = useState(null)
 	const [total, setTotal] = useState(null)
-
-	console.log(current, total)
 
 	const navigate = useNavigate()
 
@@ -64,32 +63,29 @@ export default function InfoCard({ type, data, loading }) {
 					<span className={`text-xs uppercase tracking-wider font-extrabold ${colors.text[50]}`}>{getProperties().name}</span>
 				</div>
 				<button className='rounded-full'>
-					<ChevronRight strokeWidth={3} className={`h-4 w-4 ${colors.text[200]}`} />
+					<AnimatePresence mode='popLayout'>
+						{loading ? (
+							<InlineLoader small />
+						) : (
+							<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+								<ChevronRight strokeWidth={3} className={`h-4 w-4 ${colors.text[200]}`} />
+							</motion.div>
+						)}
+					</AnimatePresence>
 				</button>
 			</header>
 			<section className='flex flex-col'>
 				<div className='flex items-end justify-between'>
 					<div className='h-12'>
-						<AnimatePresence mode='popLayout'>
-							{current?.count ? (
-								<motion.span
-									key={current.count}
-									initial={{ opacity: 0, scale: 0.5 }}
-									animate={{ opacity: 1, scale: 1 }}
-									exit={{ opacity: 0, scale: 0.5 }}
-									className='inline-block text-5xl font-black text-white'
-								>
-									{current.count}
-								</motion.span>
-							) : (
-								<motion.div
-									initial={{ opacity: 0 }}
-									animate={{ opacity: 0.75 }}
-									exit={{ opacity: 0 }}
-									className={`inline-block h-[41px] w-7 rounded-lg ${colors.background[300]}`}
-								/>
-							)}
-						</AnimatePresence>
+						<motion.span
+							key={current?.count}
+							initial={{ opacity: 0, scale: 0.5 }}
+							animate={{ opacity: 1, scale: 1 }}
+							exit={{ opacity: 0, scale: 0.5 }}
+							className='inline-block text-5xl font-black text-white'
+						>
+							{current?.count || 0}
+						</motion.span>
 						<motion.span layout className={`inline-block ml-1 font-black ${colors.text[100]}`}>
 							i dag
 						</motion.span>

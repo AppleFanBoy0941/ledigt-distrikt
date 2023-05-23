@@ -2,12 +2,13 @@ import { ChevronLeft } from 'lucide-react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import useAxios from './hooks/useAxios'
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { AuthContext } from './contexts/AuthProvider'
+import NavigationUnderlay from './components/sub-components/NavigationUnderlay'
 
 export default function Navigation() {
 	const { auth } = useContext(AuthContext)
-	const { data: user } = useAxios(`users/${auth !== null ? JSON.parse(auth).id : 0}`)
+	const { data } = useAxios(`users/${auth !== null ? JSON.parse(auth).id : 0}`)
 
 	const location = useLocation()
 	const navigate = useNavigate()
@@ -21,6 +22,13 @@ export default function Navigation() {
 	}
 
 	const routes = [
+		{
+			path: '/',
+			showTitle: true,
+			name: 'Dovre 2023',
+			showBackButton: false,
+			showProfile: true,
+		},
 		{
 			path: '/profil',
 			showTitle: false,
@@ -36,42 +44,20 @@ export default function Navigation() {
 			showProfile: false,
 		},
 		{
-			path: '/',
-			showTitle: true,
-			name: 'Dovre 2023',
-			showBackButton: false,
-			showProfile: true,
+			path: '/profil/opret-bruger',
+			showTitle: false,
+			name: 'Opret bruger',
+			showBackButton: true,
+			showProfile: false,
 		},
-	]
-
-	const [isTop, setIsTop] = useState(true)
-
-	function handleScroll() {
-		const scrollPosition = window.scrollY
-
-		if (scrollPosition > 24) {
-			setIsTop(false)
-		} else {
-			setIsTop(true)
-		}
-	}
-
-	useEffect(() => {
-		handleScroll()
-		window.addEventListener('scroll', handleScroll)
-		return () => window.removeEventListener('scroll', handleScroll)
-	}, [])
+	].reverse()
 
 	function getRouteInfo() {
 		return routes.find(route => location.pathname.startsWith(route.path))
 	}
 
 	return (
-		<nav
-			className={`fixed top-0 left-0 z-50 right-0 pt-6 p-2 shadow-lg transition-all ${
-				isTop ? 'bg-slate-50/0 shadow-slate-600/0' : 'bg-slate-50 shadow-slate-600/5'
-			}`}
-		>
+		<NavigationUnderlay>
 			<div className='flex items-center pl-4 font-header h-14'>
 				<motion.div animate={{ marginLeft: getRouteInfo().showBackButton ? -16 : 0 }} className='flex-1 flex items-center'>
 					<motion.button
@@ -121,11 +107,11 @@ export default function Navigation() {
 								className='flex rounded-3xl shrink-0 h-14 w-14 bg-white items-center justify-center border border-slate-200 shadow-lg shadow-slate-600/5'
 							>
 								<span className='font-black tracking-wider text-slate-600'>
-									{!user ? (
+									{!data?.user ? (
 										<div className='h-5 w-7 bg-slate-100 rounded-md'></div>
 									) : (
 										<motion.span initial={{ y: 6, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
-											{user.initials}
+											{data.user.initials}
 										</motion.span>
 									)}
 								</span>
@@ -134,6 +120,6 @@ export default function Navigation() {
 					) : null}
 				</AnimatePresence>
 			</div>
-		</nav>
+		</NavigationUnderlay>
 	)
 }
