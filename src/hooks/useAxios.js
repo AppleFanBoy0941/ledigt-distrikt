@@ -111,7 +111,6 @@ export default function useAxios(endpoint, noToken, fullUrl = false, noGet = fal
 
 			if (noGet) {
 				setData(response.data)
-				setLoading(true)
 				return response.data
 			}
 			const newData = await getData()
@@ -120,6 +119,8 @@ export default function useAxios(endpoint, noToken, fullUrl = false, noGet = fal
 		} catch (err) {
 			setLoading(false)
 			return handleError(err)
+		} finally {
+			setLoading(false)
 		}
 
 		return response
@@ -175,10 +176,6 @@ export default function useAxios(endpoint, noToken, fullUrl = false, noGet = fal
 					},
 				}
 			)
-
-			const newData = await getData()
-
-			setData(newData)
 		} catch (err) {
 			return handleError(err)
 		}

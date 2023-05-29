@@ -1,14 +1,26 @@
-import { ChevronRight, Trash } from 'lucide-react'
+import { ChevronRight, Loader2, Trash } from 'lucide-react'
 import useAxios from '../hooks/useAxios'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Password from '../components/sub-components/Password'
 import SiteLoader from '../components/loaders/SiteLoader'
+import { AuthContext } from '../contexts/AuthProvider'
+import InlineLoader from '../components/loaders/InlineLoader'
 
 export default function UserList() {
 	const [activeUser, setActiveUser] = useState(null)
+	const [lastUpdated, setLastUpdated] = useState(new Date().getTime())
 
-	const { data, loading } = useAxios('users')
+	const { data, loading, getData } = useAxios('users')
+
+	useEffect(() => {
+		async function update() {
+			await getData()
+			setActiveUser(null)
+		}
+
+		update()
+	}, [lastUpdated])
 
 	return (
 		<AnimatePresence mode='popLayout'>
@@ -26,23 +38,51 @@ export default function UserList() {
 				<motion.ul
 					key='content'
 					initial={{ opacity: 0, y: 24 }}
-					animate={{ opacity: 1, y: 0 }}
+					animate={{ opacity: 1, y: 0, height: 'auto' }}
 					className='rounded-3xl overflow-hidden flex flex-col gap-1 mb-8'
 				>
-					{data?.users.map(user => (
-						<UserListItem key={user._id} user={user} highlight={activeUser} setHighlight={setActiveUser} />
-					))}
+					<AnimatePresence mode='popLayout'>
+						{data?.users.map(user => (
+							<motion.li
+								key={user._id}
+								initial={{ opacity: 0, y: 24 }}
+								animate={{ opacity: 1, y: 0, x: 0 }}
+								exit={{ opacity: 0, scale: 0.8 }}
+							>
+								<UserListItem user={user} highlight={activeUser} setHighlight={setActiveUser} update={setLastUpdated} />
+							</motion.li>
+						))}
+					</AnimatePresence>
 				</motion.ul>
 			)}
 		</AnimatePresence>
 	)
 }
 
-function UserListItem({ user, highlight, setHighlight }) {
+function UserListItem({ user, highlight, setHighlight, update }) {
 	const isActive = user && user._id === highlight
+	const { auth } = useContext(AuthContext)
+
+	const role = JSON.parse(auth).role
+	const id = JSON.parse(auth).id
+
+	const { deleteData, loading } = useAxios('users/' + user._id, null, false, true)
+
+	async function deleteUser() {
+		await deleteData()
+
+		update(new Date().getTime())
+	}
+
+	function showDeleteButton() {
+		if (user._id === id) return false
+		if (role === 'super-admin') return true
+
+		return false
+	}
 
 	return (
-		<motion.li
+		<motion.div
 			animate={{ opacity: highlight === null ? 1 : isActive ? 1 : 0.25 }}
 			className='rounded-lg bg-slate-100  p-2 pr-4 overflow-hidden'
 		>
@@ -81,14 +121,36 @@ function UserListItem({ user, highlight, setHighlight }) {
 					>
 						<div className='flex flex-col pt-4 gap-2'>
 							<Password password={user.password} />
-							<button className='ml-auto bg-rose-400 flex items-center gap-2 p-2 pl-3 pr-3 rounded-full text-sm font-bold text-rose-50 -mr-2'>
-								Slet bruger
-								<Trash className='h-4 w-4' />
-							</button>
+							{showDeleteButton() && (
+								<button
+									onClick={deleteUser}
+									className='ml-auto bg-rose-400 flex items-center gap-2 p-2 pl-3 pr-3 rounded-full text-sm font-bold text-rose-50 -mr-2'
+								>
+									Slet bruger
+									<AnimatePresence mode='popLayout'>
+										{loading ? (
+											<motion.div key='loader' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+												<motion.div
+													animate={{
+														rotate: [0, 360],
+														transition: { ease: 'linear', repeat: Infinity, repeatType: 'loop', duration: 2 },
+													}}
+												>
+													<Loader2 className='h-4 w-4' />
+												</motion.div>
+											</motion.div>
+										) : (
+											<motion.div key='icon' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+												<Trash className='h-4 w-4' />
+											</motion.div>
+										)}
+									</AnimatePresence>
+								</button>
+							)}
 						</div>
 					</motion.section>
 				)}
 			</AnimatePresence>
-		</motion.li>
+		</motion.div>
 	)
 }

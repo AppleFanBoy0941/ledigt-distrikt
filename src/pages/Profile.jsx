@@ -13,7 +13,6 @@ export default function Profile() {
 	const userID = auth ? JSON.parse(auth).id : 0
 
 	const [signedOut, setSignedOut] = useState(false)
-	const [showPassword, setShowPassword] = useState(false)
 
 	const { data, loading } = useAxios('users/' + userID)
 
@@ -57,78 +56,6 @@ export default function Profile() {
 						</div>
 					</header>
 					<section className='flex flex-col gap-6 mt-8'>
-						{/* <div className='p-2 rounded-3xl h-14 flex items-center bg-white border border-slate-50 shadow-xl shadow-slate-400/10 font-header font-bold text-slate-800 pl-6 pr-4'>
-							<AnimatePresence mode='popLayout'>
-								{showPassword ? (
-									<motion.p
-										variants={{
-											initial: { opacity: 0 },
-											animate: { opacity: 1, transition: { staggerChildren: 0.02 } },
-											exit: { opacity: 0 },
-										}}
-										initial='initial'
-										animate='animate'
-										exit='exit'
-										key='password_on'
-										className='flex-1'
-									>
-										{data.user.password.split('').map((letter, index) => (
-											<motion.span
-												variants={{
-													initial: { x: 4, opacity: 0, scale: 0.8 },
-													animate: { x: 0, opacity: 1, scale: 1, transition: { type: 'spring', stiffness: 200, damping: 20 } },
-												}}
-												key={letter + index}
-												className='inline-flex'
-											>
-												{letter}
-											</motion.span>
-										))}
-									</motion.p>
-								) : (
-									<motion.div
-										key='password_off'
-										variants={{
-											initial: { opacity: 0 },
-											animate: { opacity: 1, transition: { staggerChildren: 0.03 } },
-											exit: { opacity: 0 },
-										}}
-										initial='initial'
-										animate='animate'
-										exit='exit'
-										className='flex-1 flex items-center gap-1'
-									>
-										{data.user.password.split('').map((_, index) => {
-											if (index > 15) return null
-											return (
-												<motion.div
-													key={index}
-													variants={passwordVariants.bubble}
-													className='h-2 w-2 bg-slate-500 rounded-full'
-												></motion.div>
-											)
-										})}
-									</motion.div>
-								)}
-							</AnimatePresence>
-							<motion.button
-								whileTap={{ scale: 0.9 }}
-								className='text-slate-400'
-								onClick={() => setShowPassword(!showPassword)}
-							>
-								<AnimatePresence mode='popLayout'>
-									{showPassword ? (
-										<motion.div key='password_on' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-											<Eye />
-										</motion.div>
-									) : (
-										<motion.div key='password_off' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-											<EyeOff />
-										</motion.div>
-									)}
-								</AnimatePresence>
-							</motion.button>
-						</div> */}
 						<Password password={data.user.password} background />
 						{data.user.role.endsWith('admin') ? (
 							<Link
