@@ -5,9 +5,7 @@ import { useState, useMemo, useCallback } from 'react'
 import { AnimatePresence, color, motion } from 'framer-motion'
 
 export default function ReportInput({ type, value, setValue, reportValue }) {
-	// const [value, setValue] = useState(0)
 	const colors = tailwindColors(type)
-	const [temporaryCount, setTemporaryCount] = useState(0)
 
 	const titles = {
 		hours: 'Timer',
@@ -18,11 +16,19 @@ export default function ReportInput({ type, value, setValue, reportValue }) {
 	}
 
 	function decrement() {
+		if (value <= reportValue * -1) return
 		setValue(value - 1)
 	}
 
 	function increment() {
 		setValue(value + 1)
+	}
+
+	function showDecrementButton() {
+		if (reportValue > 0) return true
+		if (value > 0) return true
+
+		return false
 	}
 
 	return (
@@ -66,15 +72,21 @@ export default function ReportInput({ type, value, setValue, reportValue }) {
 						</motion.div>
 					)}
 				</AnimatePresence>
-				<motion.button
-					type='button'
-					onClick={decrement}
-					animate={{ scale: 1, rotate: 0 }}
-					whileTap={{ scale: 0.8, rotate: -5 }}
-					className={`h-12 w-12 grid place-items-center border-[3px] rounded-full ${colors.border[300]} ${colors.text[300]}`}
-				>
-					<Minus className='' strokeWidth={3} />
-				</motion.button>
+				<AnimatePresence mode='wait'>
+					{showDecrementButton() && (
+						<motion.button
+							type='button'
+							onClick={decrement}
+							initial={{ x: 32, scale: 0.5 }}
+							animate={{ scale: 1, rotate: 0, x: 0, width: 48 }}
+							exit={{ scale: 0.8, opacity: 0, transition: { delay: 0.15, ease: 'easeIn', duration: 0.05 } }}
+							whileTap={{ scale: 0.8, rotate: -5, width: 48 }}
+							className={`h-12 w-12 grid place-items-center border-[3px] rounded-full ${colors.border[300]} ${colors.text[300]}`}
+						>
+							<Minus className='' strokeWidth={3} />
+						</motion.button>
+					)}
+				</AnimatePresence>
 				<motion.button
 					type='button'
 					onClick={increment}

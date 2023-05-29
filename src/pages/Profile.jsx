@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Link, useNavigate } from 'react-router-dom'
 import InlineLoader from '../components/loaders/InlineLoader'
 import { ChevronRight, Eye, EyeOff } from 'lucide-react'
+import Password from '../components/sub-components/Password'
 
 export default function Profile() {
 	const { auth, setAuth } = useContext(AuthContext)
@@ -56,7 +57,7 @@ export default function Profile() {
 						</div>
 					</header>
 					<section className='flex flex-col gap-6 mt-8'>
-						<div className='p-2 rounded-3xl h-14 flex items-center bg-white border border-slate-50 shadow-xl shadow-slate-400/10 font-header font-bold text-slate-800 pl-6 pr-4'>
+						{/* <div className='p-2 rounded-3xl h-14 flex items-center bg-white border border-slate-50 shadow-xl shadow-slate-400/10 font-header font-bold text-slate-800 pl-6 pr-4'>
 							<AnimatePresence mode='popLayout'>
 								{showPassword ? (
 									<motion.p
@@ -127,7 +128,17 @@ export default function Profile() {
 									)}
 								</AnimatePresence>
 							</motion.button>
-						</div>
+						</div> */}
+						<Password password={data.user.password} background />
+						{data.user.role.endsWith('admin') ? (
+							<Link
+								to='/brugere'
+								className='flex items-center justify-between h-14 bg-white border border-slate-50 rounded-3xl shadow-xl shadow-slate-400/10 pl-6 pr-4 font-header font-bold text-slate-800'
+							>
+								Se brugere
+								<ChevronRight className='text-slate-400' />
+							</Link>
+						) : null}
 						{data.user.role === 'super-admin' ? (
 							<Link
 								to='/profil/opret-bruger'

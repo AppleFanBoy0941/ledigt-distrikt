@@ -16,7 +16,11 @@ export default function useAxios(endpoint, noToken, fullUrl = false, noGet = fal
 
 	function handleError(error) {
 		console.log(error)
-		setError({ status: error.response.status, error: error.response })
+
+		const message = { success: false, status: error.response.status, message: error.response.data.message }
+		setError(message)
+
+		return message
 	}
 
 	useEffect(() => {
@@ -114,8 +118,8 @@ export default function useAxios(endpoint, noToken, fullUrl = false, noGet = fal
 
 			setData(newData)
 		} catch (err) {
-			handleError(err)
 			setLoading(false)
+			return handleError(err)
 		}
 
 		return response
@@ -145,7 +149,7 @@ export default function useAxios(endpoint, noToken, fullUrl = false, noGet = fal
 			)
 			setData(response.data)
 		} catch (err) {
-			handleError(err)
+			return handleError(err)
 		} finally {
 			setLoading(false)
 		}
@@ -176,7 +180,7 @@ export default function useAxios(endpoint, noToken, fullUrl = false, noGet = fal
 
 			setData(newData)
 		} catch (err) {
-			handleError(err)
+			return handleError(err)
 		}
 
 		return data

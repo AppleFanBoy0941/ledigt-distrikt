@@ -12,6 +12,7 @@ const Home = React.lazy(() => import('./pages/Home'))
 const Report = React.lazy(() => import('./pages/Report'))
 const Profile = React.lazy(() => import('./pages/Profile'))
 const CreateUser = React.lazy(() => import('./pages/CreateUser'))
+const SeeUsers = React.lazy(() => import('./pages/SeeUsers'))
 
 function App() {
 	const [authCookie] = useCookie('auth')
@@ -35,6 +36,10 @@ function App() {
 				{
 					path: '/profil/opret-bruger',
 					element: <CreateUser />,
+				},
+				{
+					path: '/brugere',
+					element: <SeeUsers />,
 				},
 				{
 					path: '*',

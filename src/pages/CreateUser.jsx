@@ -3,6 +3,7 @@ import Input from '../components/inputs/Input'
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import useAxios from '../hooks/useAxios'
+import InlineLoader from '../components/loaders/InlineLoader'
 
 export default function CreateUser() {
 	const [firstName, setFirstName] = useState('')
@@ -16,6 +17,7 @@ export default function CreateUser() {
 	const [isAdmin, setIsAdmin] = useState(false)
 
 	const [message, setMessage] = useState('')
+	const [isError, setIsError] = useState(false)
 
 	useEffect(() => {
 		setInitials(`${firstName.split('')[0]?.toUpperCase() || '-'}${lastName.split('')[0]?.toUpperCase() || '-'}`)
@@ -36,12 +38,13 @@ export default function CreateUser() {
 		setUsername(event.target.value)
 	}
 
-	const { data, loading, error, postData } = useAxios('users', false, false, true)
+	const { loading, postData } = useAxios('users', false, false, true)
 
 	async function onSubmit(event) {
 		event.preventDefault()
 
 		setMessage('')
+		setIsError(false)
 
 		const newUser = {
 			first_name: firstName,
@@ -54,11 +57,19 @@ export default function CreateUser() {
 		const response = await postData(newUser)
 
 		console.log(response)
+
+		if (response.success) {
+			setFirstName('')
+			setLastName('')
+		} else {
+			setIsError(true)
+			setMessage(response.message)
+		}
 	}
 
 	return (
-		<form onSubmit={onSubmit} className='flex flex-col gap-4'>
-			<div className='h-24 w-24 mx-auto border border-slate-100 rounded-[2.5rem] bg-gradient-to-tr from-slate-50 to-white flex items-center justify-center gap-px text-2xl font-bold font-header text-slate-400 shadow-xl shadow-slate-600/10'>
+		<form onSubmit={onSubmit} className='flex flex-col gap-4 mt-4'>
+			<div className='h-32 w-32 mx-auto border border-slate-100 rounded-[3.5rem] bg-gradient-to-tr from-slate-50 to-white flex items-center justify-center gap-px text-4xl font-black font-header text-slate-400 shadow-xl shadow-slate-400/10 mb-4'>
 				{initials.split('').map((initial, index) => (
 					<motion.span
 						layout
@@ -114,8 +125,21 @@ export default function CreateUser() {
 				transition={{ type: 'spring', stiffness: 500, damping: 20 }}
 				className='h-14 flex items-center justify-center font-header font-bold bg-sky-400 rounded-3xl text-white shadow-xl shadow-sky-600/30'
 			>
-				Opret bruger
+				{loading ? <InlineLoader /> : 'Opret bruger'}
 			</motion.button>
+			<AnimatePresence mode='popLayout'>
+				{message && (
+					<motion.p
+						key={message}
+						initial={{ y: -16, opacity: 0 }}
+						animate={{ opacity: 1, y: 0 }}
+						exit={{ opacity: 0, y: 8 }}
+						className={`px-6 font-semibold ${isError ? 'text-rose-400' : 'text-slate-400'}`}
+					>
+						{message}
+					</motion.p>
+				)}
+			</AnimatePresence>
 		</form>
 	)
 }

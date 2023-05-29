@@ -50,6 +50,13 @@ export default function Navigation() {
 			showBackButton: true,
 			showProfile: false,
 		},
+		{
+			path: '/brugere',
+			showTitle: true,
+			name: 'Brugere',
+			showBackButton: true,
+			showProfile: true,
+		},
 	].reverse()
 
 	function getRouteInfo() {
@@ -59,14 +66,14 @@ export default function Navigation() {
 	return (
 		<NavigationUnderlay>
 			<div className='flex items-center pl-4 font-header h-14'>
-				<motion.div animate={{ marginLeft: getRouteInfo().showBackButton ? -16 : 0 }} className='flex-1 flex items-center'>
+				<motion.div animate={{ marginLeft: getRouteInfo().showBackButton ? -16 : 0 }} className='flex-1 flex items-end'>
 					<motion.button
 						initial={{ width: 0, opacity: 1 }}
 						animate={{ width: getRouteInfo().showBackButton ? 32 : 0, opacity: 1 }}
 						onClick={() => navigate(-1)}
-						className='h-8 flex'
+						className='h-9 w-8 flex'
 					>
-						<ChevronLeft className='h-full w-full text-slate-400' />
+						<ChevronLeft className='h-8 w-8 text-slate-400' />
 					</motion.button>
 
 					<div className='flex-1'>

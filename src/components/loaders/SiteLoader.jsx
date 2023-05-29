@@ -8,6 +8,7 @@ export default function SiteLoader({ showTitle, fullPage }) {
 					<motion.div
 						animate={{
 							opacity: [0, 1, 1, 1, 0],
+							filter: ['blur(4px)', 'blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(4px)'],
 							transition: {
 								repeat: Infinity,
 								repeatType: 'loop',
@@ -33,6 +34,7 @@ export default function SiteLoader({ showTitle, fullPage }) {
 					<motion.div
 						animate={{
 							opacity: [0, 1, 1, 1, 0],
+							filter: ['blur(4px)', 'blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(4px)'],
 							transition: {
 								repeat: Infinity,
 								repeatType: 'loop',
@@ -60,6 +62,7 @@ export default function SiteLoader({ showTitle, fullPage }) {
 					<motion.div
 						animate={{
 							opacity: [0, 1, 1, 1, 0],
+							filter: ['blur(4px)', 'blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(4px)'],
 							transition: {
 								repeat: Infinity,
 								repeatType: 'loop',

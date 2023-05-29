@@ -7,7 +7,7 @@ export default function NavigationUnderlay({ children }) {
 	function handleScroll() {
 		const scrollPosition = window.scrollY
 
-		if (scrollPosition > 24) {
+		if (scrollPosition > 8) {
 			setIsTop(false)
 		} else {
 			setIsTop(true)
