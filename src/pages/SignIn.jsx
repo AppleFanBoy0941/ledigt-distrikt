@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useState, useContext } from 'react'
 import InlineLoader from '../components/loaders/InlineLoader'
-import useCookie from 'react-use-cookie'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../contexts/AuthProvider'
 
@@ -13,7 +12,6 @@ export default function SignIn() {
 	const [loading, setLoading] = useState(false)
 	const [showPasswordKeyboard, setShowPasswordKeyboard] = useState(false)
 	const [error, setError] = useState('')
-	// const [_, setAuth] = useCookie('auth')
 	const [showIntro, setShowIntro] = useState(false)
 	const { setAuth } = useContext(AuthContext)
 

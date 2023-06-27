@@ -79,7 +79,11 @@ export default function Password({ password, background }) {
 					</motion.div>
 				)}
 			</AnimatePresence>
-			<motion.button whileTap={{ scale: 0.9 }} className='text-slate-400' onClick={() => setShowPassword(!showPassword)}>
+			<motion.button
+				whileTap={{ scale: 0.9 }}
+				className='text-slate-400 relative'
+				onClick={() => setShowPassword(!showPassword)}
+			>
 				<AnimatePresence mode='popLayout'>
 					{showPassword ? (
 						<motion.div key='password_on' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>

@@ -1,11 +1,11 @@
 import React, { useEffect, Suspense } from 'react'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import useCookie from 'react-use-cookie'
 // import Layout from './Layout'
 import AuthProvider from './contexts/AuthProvider'
 import SiteLoader from './components/loaders/SiteLoader'
 import Layout from './Layout'
 import UpdateProvider from './contexts/UpdateProvider'
+import useLocalStorage from './hooks/useLocalStorage'
 
 const SignIn = React.lazy(() => import('./pages/SignIn'))
 const Home = React.lazy(() => import('./pages/Home'))
@@ -15,7 +15,7 @@ const CreateUser = React.lazy(() => import('./pages/CreateUser'))
 const SeeUsers = React.lazy(() => import('./pages/SeeUsers'))
 
 function App() {
-	const [authCookie] = useCookie('auth')
+	const [authCookie] = useLocalStorage('auth')
 
 	const router = createBrowserRouter([
 		{

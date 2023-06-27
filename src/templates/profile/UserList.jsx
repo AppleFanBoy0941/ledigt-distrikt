@@ -1,11 +1,11 @@
-import { ChevronRight, Loader2, Trash } from 'lucide-react'
-import useAxios from '../hooks/useAxios'
+import { ChevronRight, Contact, Loader2, Trash, User } from 'lucide-react'
+import useAxios from '../../hooks/useAxios'
 import { useContext, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import Password from '../components/sub-components/Password'
-import SiteLoader from '../components/loaders/SiteLoader'
-import { AuthContext } from '../contexts/AuthProvider'
-import InlineLoader from '../components/loaders/InlineLoader'
+import Password from '../../components/sub-components/Password'
+import SiteLoader from '../../components/loaders/SiteLoader'
+import { AuthContext } from '../../contexts/AuthProvider'
+import InlineLoader from '../../components/loaders/InlineLoader'
 
 export default function UserList() {
 	const [activeUser, setActiveUser] = useState(null)
@@ -63,6 +63,8 @@ function UserListItem({ user, highlight, setHighlight, update }) {
 	const isActive = user && user._id === highlight
 	const { auth } = useContext(AuthContext)
 
+	console.log(user)
+
 	const role = JSON.parse(auth).role
 	const id = JSON.parse(auth).id
 
@@ -119,7 +121,11 @@ function UserListItem({ user, highlight, setHighlight, update }) {
 						animate={{ opacity: 1, height: 'auto' }}
 						exit={{ opacity: 0, height: 0 }}
 					>
-						<div className='flex flex-col pt-4 gap-2'>
+						<div className='flex flex-col pt-4 gap-2 pl-2'>
+							<div className='flex items-center gap-2'>
+								<Contact strokeWidth={2.5} className='text-slate-400' />
+								<p className='font-bold font-header text-slate-600 flex items-center gap-px'>{user.username}</p>
+							</div>
 							<Password password={user.password} />
 							{showDeleteButton() && (
 								<button

@@ -1,4 +1,4 @@
-import UserList from '../templates/UserList'
+import UserList from '../templates/profile/UserList'
 
 export default function SeeUsers() {
 	return (

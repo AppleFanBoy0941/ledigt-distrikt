@@ -52,9 +52,9 @@ export default function InfoCard({ type, data, loading }) {
 
 	return (
 		<motion.div
-			onClick={() => {
-				navigate('/rapport/' + getProperties().url)
-			}}
+			// onClick={() => {
+			// 	navigate('/rapport/' + getProperties().url)
+			// }}
 			className={`${colors.background[400]} p-4 rounded-3xl shadow-xl font-header ${colors.shadow[400]} grid gap-3`}
 		>
 			<header className='flex items-center justify-between'>
@@ -63,15 +63,7 @@ export default function InfoCard({ type, data, loading }) {
 					<span className={`text-xs uppercase tracking-wider font-extrabold ${colors.text[50]}`}>{getProperties().name}</span>
 				</div>
 				<button className='rounded-full'>
-					<AnimatePresence mode='popLayout'>
-						{loading ? (
-							<InlineLoader small />
-						) : (
-							<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-								<ChevronRight strokeWidth={3} className={`h-4 w-4 ${colors.text[200]}`} />
-							</motion.div>
-						)}
-					</AnimatePresence>
+					<AnimatePresence mode='popLayout'>{loading ? <InlineLoader small /> : null}</AnimatePresence>
 				</button>
 			</header>
 			<section className='flex flex-col'>
