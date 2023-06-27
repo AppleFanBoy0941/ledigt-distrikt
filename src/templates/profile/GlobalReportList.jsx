@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import SiteLoader from '../../components/loaders/SiteLoader'
 import useAxios from '../../hooks/useAxios'
+import GlobalReportListItem from '../../components/GlobalReportListItem'
 
 export default function GlobalReportList() {
 	const { data, loading } = useAxios('globalreports')
@@ -12,7 +13,7 @@ export default function GlobalReportList() {
 			<h2 className='px-6 text-slate-600 font-header font-extrabold text-2xl'>Rapporter</h2>
 			<motion.ul
 				animate={{ height: 'fit-content' }}
-				className='flex flex-col border border-slate-50 rounded-3xl shadow-xl shadow-slate-400/10'
+				className='flex flex-col border border-slate-50 rounded-3xl shadow-xl shadow-slate-400/10 bg-white gap-4'
 			>
 				<AnimatePresence mode='popLayout'>
 					{loading ? (
@@ -25,14 +26,7 @@ export default function GlobalReportList() {
 							<SiteLoader />
 						</motion.div>
 					) : (
-						<motion.p key='data'>
-							{data &&
-								data.reports.map(report => (
-									<li>
-										<header>{report.date}</header>
-									</li>
-								))}
-						</motion.p>
+						data && data.reports.map(report => <GlobalReportListItem key={report.id} report={report} />)
 					)}
 				</AnimatePresence>
 			</motion.ul>

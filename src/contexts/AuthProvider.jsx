@@ -1,5 +1,4 @@
 import { createContext } from 'react'
-import useCookie from 'react-use-cookie'
 import useLocalStorage from '../hooks/useLocalStorage'
 
 export const AuthContext = createContext()
