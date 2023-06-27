@@ -1,9 +1,7 @@
+import { motion } from 'framer-motion'
+
 export default function GlobalReportListItem({ report }) {
-	console.log(report)
-
 	const date = new Date(report.date.replace(/-/g, '/'))
-
-	console.log(date)
 
 	const weekdays = ['Søn', 'Man', 'Tirs', 'Ons', 'Tors', 'Fre', 'Lør']
 	const months = [
@@ -41,9 +39,14 @@ export default function GlobalReportListItem({ report }) {
 
 function Item({ type, count, bg }) {
 	return (
-		<li className={`-mx-4 p-4 py-2 rounded-2xl flex justify-between items-center ${bg && 'bg-slate-50'}`}>
+		<motion.li
+			initial={{ opacity: 0, x: -24 }}
+			whileInView={{ opacity: 1, x: 0 }}
+			viewport={{ once: true }}
+			className={`-mx-4 p-4 py-2 rounded-2xl flex justify-between items-center ${bg && 'bg-slate-50'}`}
+		>
 			<p className='font-medium text-slate-400'>{type}</p>
 			<p className='text-3xl font-header font-black text-slate-700'>{count}</p>
-		</li>
+		</motion.li>
 	)
 }

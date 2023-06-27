@@ -8,25 +8,13 @@ import InlineLoader from '../components/loaders/InlineLoader'
 
 export default function InfoCard({ type, data, loading }) {
 	const colors = tailwindColors(type)
-	const [info, setInfo] = useState(null)
 	const [current, setCurrent] = useState(null)
 	const [total, setTotal] = useState(null)
-
-	const navigate = useNavigate()
 
 	const date = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`
 
 	useEffect(() => {
 		if (data) {
-			setInfo(
-				data.reports.map(item => {
-					return {
-						count: item[type],
-						date: item.date,
-					}
-				})
-			)
-
 			setCurrent(
 				data.reports
 					.map(item => {
