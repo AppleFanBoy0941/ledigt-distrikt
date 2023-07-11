@@ -4,11 +4,11 @@ export default function SiteLoader({ showTitle, fullPage }) {
 	return (
 		<div className={`${fullPage && 'fixed inset-0'} flex items-center justify-center text-amber-300 font-header`}>
 			<div className='flex flex-col items-center'>
-				<div className='h-32 w-32 flex items-end gap-3 justify-center mb-4'>
+				<motion.div layoutId='site-loading-animation' className='h-32 w-32 flex items-end gap-3 justify-center mb-4'>
 					<motion.div
 						animate={{
 							opacity: [0, 1, 1, 1, 0],
-							filter: ['blur(4px)', 'blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(4px)'],
+							filter: ['blur(8px)', 'blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(8px)'],
 							transition: {
 								repeat: Infinity,
 								repeatType: 'loop',
@@ -34,7 +34,7 @@ export default function SiteLoader({ showTitle, fullPage }) {
 					<motion.div
 						animate={{
 							opacity: [0, 1, 1, 1, 0],
-							filter: ['blur(4px)', 'blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(4px)'],
+							filter: ['blur(8px)', 'blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(8px)'],
 							transition: {
 								repeat: Infinity,
 								repeatType: 'loop',
@@ -62,7 +62,7 @@ export default function SiteLoader({ showTitle, fullPage }) {
 					<motion.div
 						animate={{
 							opacity: [0, 1, 1, 1, 0],
-							filter: ['blur(4px)', 'blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(4px)'],
+							filter: ['blur(8px)', 'blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(8px)'],
 							transition: {
 								repeat: Infinity,
 								repeatType: 'loop',
@@ -87,7 +87,7 @@ export default function SiteLoader({ showTitle, fullPage }) {
 							className='bg-amber-400 rounded-full shadow-xl shadow-amber-500/25'
 						/>
 					</motion.div>
-				</div>
+				</motion.div>
 				{showTitle ? (
 					<motion.div
 						initial={{ y: 24, opacity: 0, height: 0 }}

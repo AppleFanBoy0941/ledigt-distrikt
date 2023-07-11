@@ -9,6 +9,7 @@ import { ChevronRight, UserPlus, Users } from 'lucide-react'
 import Password from '../components/sub-components/Password'
 import SingleLink from '../components/links/SingleLink'
 import GlobalReportList from '../templates/profile/GlobalReportList'
+import UpdatePeriod from '../templates/profile/UpdatePeriod'
 
 export default function Profile() {
 	const { auth, setAuth } = useContext(AuthContext)
@@ -68,9 +69,12 @@ export default function Profile() {
 							</>
 						) : null}
 						{data?.user.role === 'super-admin' ? (
-							<SingleLink to='/profil/opret-bruger' icon={UserPlus}>
-								Opret bruger
-							</SingleLink>
+							<>
+								<SingleLink to='/profil/opret-bruger' icon={UserPlus}>
+									Opret bruger
+								</SingleLink>
+								<UpdatePeriod />
+							</>
 						) : null}
 						<button
 							onClick={() => {

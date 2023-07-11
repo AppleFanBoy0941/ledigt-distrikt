@@ -39,16 +39,11 @@ export default function InfoCard({ type, data, loading }) {
 	const Icon = getProperties().icon
 
 	return (
-		<motion.div
-			// onClick={() => {
-			// 	navigate('/rapport/' + getProperties().url)
-			// }}
-			className={`${colors.background[400]} p-4 rounded-3xl shadow-xl font-header ${colors.shadow[400]} grid gap-3`}
-		>
+		<motion.div className={`${colors.background[400]} p-4 rounded-3xl shadow-xl font-header ${colors.shadow[400]} grid gap-3`}>
 			<header className='flex items-center justify-between'>
 				<div className={`flex items-center ${colors.text[200]} gap-1`}>
 					<Icon strokeWidth={3} className='h-4 w-4' />
-					<span className={`text-xs uppercase tracking-wider font-extrabold ${colors.text[50]}`}>{getProperties().name}</span>
+					<span className={`text-xs uppercase tracking-wider font-extrabold ${colors.text[100]}`}>{getProperties().name}</span>
 				</div>
 				<button className='rounded-full'>
 					<AnimatePresence mode='popLayout'>{loading ? <InlineLoader small /> : null}</AnimatePresence>

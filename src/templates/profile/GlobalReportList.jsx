@@ -3,7 +3,9 @@ import SiteLoader from '../../components/loaders/SiteLoader'
 import useAxios from '../../hooks/useAxios'
 import GlobalReportListItem from '../../components/GlobalReportListItem'
 import { useEffect, useState } from 'react'
-import { BookOpen, Film, MessageCircle, TimerReset, Users } from 'lucide-react'
+import { BookOpen, Film, List, MessageCircle, TimerReset, Users } from 'lucide-react'
+import SingleLink from '../../components/links/SingleLink'
+import SmallLoader from '../../components/loaders/SmallLoader'
 
 export default function GlobalReportList() {
 	const { data, loading } = useAxios('globalreports')
@@ -28,16 +30,19 @@ export default function GlobalReportList() {
 
 	return (
 		<article className='my-6'>
-			<h2 className='px-6 text-slate-600 font-header font-extrabold text-2xl'>Gruppens rapport</h2>
+			<header className='flex justify-between items-center pl-6 pr-2'>
+				<h2 className='text-slate-400 font-header font-extrabold text-2xl mb-1'>Gruppens rapport</h2>
+				{loading && <SmallLoader color='bg-slate-600' />}
+			</header>
 			<ul className='flex flex-col gap-4 mb-6'>
 				<motion.div
-					whileTap={{ scale: 0.9 }}
+					whileTap={{ scale: 0.95 }}
 					transition={{ type: 'spring', stiffness: 200, damping: 10 }}
 					className='bg-gradient-to-t from-fuchsia-500 to-fuchsia-400 p-6 rounded-3xl flex justify-between items-center shadow-xl shadow-fuchsia-400/25 h-20'
 				>
 					<div className='flex items-center gap-2'>
 						<TimerReset className='text-fuchsia-300' />
-						<p className='font-semibold text-fuchsia-200'>Timer</p>
+						<p className='font-semibold text-fuchsia-100 font-header'>Timer</p>
 					</div>
 					<motion.p
 						key={totalHours}
@@ -49,13 +54,13 @@ export default function GlobalReportList() {
 					</motion.p>
 				</motion.div>
 				<motion.div
-					whileTap={{ scale: 0.9 }}
+					whileTap={{ scale: 0.95 }}
 					transition={{ type: 'spring', stiffness: 200, damping: 10 }}
 					className='bg-gradient-to-t from-amber-500 to-amber-400 p-6 rounded-3xl flex justify-between items-center shadow-xl shadow-amber-400/25 h-20'
 				>
 					<div className='flex items-center gap-2'>
 						<MessageCircle className='text-amber-300' />
-						<p className='font-semibold text-amber-200'>Gode samtaler</p>
+						<p className='font-semibold text-amber-100 font-header'>Gode samtaler</p>
 					</div>
 					<motion.p
 						key={totalConversations}
@@ -67,13 +72,13 @@ export default function GlobalReportList() {
 					</motion.p>
 				</motion.div>
 				<motion.div
-					whileTap={{ scale: 0.9 }}
+					whileTap={{ scale: 0.95 }}
 					transition={{ type: 'spring', stiffness: 200, damping: 10 }}
 					className='bg-gradient-to-t from-rose-500 to-rose-400 p-6 rounded-3xl flex justify-between items-center shadow-xl shadow-rose-400/25 h-20'
 				>
 					<div className='flex items-center gap-2'>
 						<BookOpen className='text-rose-300' />
-						<p className='font-semibold text-rose-200'>Publikationer</p>
+						<p className='font-semibold text-rose-100 font-header'>Publikationer</p>
 					</div>
 					<motion.p
 						key={totalPublications}
@@ -85,13 +90,13 @@ export default function GlobalReportList() {
 					</motion.p>
 				</motion.div>
 				<motion.div
-					whileTap={{ scale: 0.9 }}
+					whileTap={{ scale: 0.95 }}
 					transition={{ type: 'spring', stiffness: 200, damping: 10 }}
 					className='bg-gradient-to-t from-sky-500 to-sky-400 p-6 rounded-3xl flex justify-between items-center shadow-xl shadow-sky-400/25 h-20'
 				>
 					<div className='flex items-center gap-2'>
 						<Film className='text-sky-300' />
-						<p className='font-semibold text-sky-200'>Film</p>
+						<p className='font-semibold text-sky-100 font-header'>Film</p>
 					</div>
 					<motion.p
 						key={totalVideos}
@@ -103,13 +108,13 @@ export default function GlobalReportList() {
 					</motion.p>
 				</motion.div>
 				<motion.div
-					whileTap={{ scale: 0.9 }}
+					whileTap={{ scale: 0.95 }}
 					transition={{ type: 'spring', stiffness: 200, damping: 10 }}
 					className='bg-gradient-to-t from-emerald-500 to-emerald-400 p-6 rounded-3xl flex justify-between items-center shadow-xl shadow-emerald-400/25 h-20'
 				>
 					<div className='flex items-center gap-2'>
 						<Users className='text-emerald-300' />
-						<p className='font-semibold text-emerald-200'>Genbesøg</p>
+						<p className='font-semibold text-emerald-100 font-header'>Genbesøg</p>
 					</div>
 					<motion.p
 						key={totalReturnVisits}
@@ -121,27 +126,9 @@ export default function GlobalReportList() {
 					</motion.p>
 				</motion.div>
 			</ul>
-			{loading ? (
-				<motion.div
-					key='loader'
-					initial={{ height: 0, opacity: 0 }}
-					animate={{ height: 'auto', opacity: 1 }}
-					exit={{ height: 0, opacity: 0 }}
-				>
-					<SiteLoader />
-				</motion.div>
-			) : (
-				<motion.ul
-					key='data'
-					initial={{ opacity: 0, y: 24 }}
-					animate={{ opacity: 1, y: 0 }}
-					className='flex flex-col border border-slate-50 rounded-3xl shadow-xl shadow-slate-400/10 bg-white gap-4'
-				>
-					<AnimatePresence mode='popLayout'>
-						{data && data.reports.map(report => <GlobalReportListItem key={report.id} report={report} />)}
-					</AnimatePresence>
-				</motion.ul>
-			)}
+			<SingleLink to='/samlede-rapporter' icon={List}>
+				Alle rapporter
+			</SingleLink>
 		</article>
 	)
 }

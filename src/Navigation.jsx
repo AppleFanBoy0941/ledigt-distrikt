@@ -57,6 +57,13 @@ export default function Navigation() {
 			showBackButton: true,
 			showProfile: true,
 		},
+		{
+			path: '/samlede-rapporter',
+			showTitle: false,
+			name: 'Rapporter',
+			showBackButton: true,
+			showProfile: true,
+		},
 	].reverse()
 
 	function getRouteInfo() {

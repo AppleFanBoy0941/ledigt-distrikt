@@ -8,6 +8,7 @@ import useLocalStorage from '../hooks/useLocalStorage'
 import InlineLoader from '../components/loaders/InlineLoader'
 import { useNavigate } from 'react-router-dom'
 import { UpdateContext } from '../contexts/UpdateProvider'
+import SmallLoader from '../components/loaders/SmallLoader'
 
 export default function ReportCard() {
 	const date = new Date()
@@ -104,38 +105,51 @@ export default function ReportCard() {
 						</motion.span>
 						<h2 className='text-3xl font-black text-slate-900 leading-none'>{weekdays[date.getDay()]}</h2>
 					</div>
-					<div className={`flex flex-col items-end gap-1 ${timeLeft <= 6 ? 'text-red-300' : 'text-slate-200'}`}>
-						{clock === 1 ? (
-							<Clock1 className={`h-5 w-5 stroke-2`} />
-						) : clock === 2 ? (
-							<Clock2 className={`h-5 w-5 stroke-2`} />
-						) : clock === 3 ? (
-							<Clock3 className={`h-5 w-5 stroke-2`} />
-						) : clock === 4 ? (
-							<Clock4 className={`h-5 w-5 stroke-2`} />
-						) : clock === 5 ? (
-							<Clock5 className={`h-5 w-5 stroke-2`} />
-						) : clock === 6 ? (
-							<Clock6 className={`h-5 w-5 stroke-2`} />
-						) : clock === 7 ? (
-							<Clock7 className={`h-5 w-5 stroke-2`} />
-						) : clock === 8 ? (
-							<Clock8 className={`h-5 w-5 stroke-2`} />
-						) : clock === 9 ? (
-							<Clock9 className={`h-5 w-5 stroke-2`} />
-						) : clock === 10 ? (
-							<Clock10 className={`h-5 w-5 stroke-2`} />
-						) : clock === 11 ? (
-							<Clock11 className={`h-5 w-5 stroke-2`} />
-						) : clock === 12 ? (
-							<Clock12 className={`h-5 w-5 stroke-2`} />
+					<AnimatePresence mode='popLayout'>
+						{loading ? (
+							<motion.div key='loader' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+								<SmallLoader color='bg-slate-400' />
+							</motion.div>
 						) : (
-							<Clock2 className={`h-5 w-5 stroke-2`} />
+							<motion.div
+								key='loaded'
+								initial={{ opacity: 0, x: 16 }}
+								animate={{ opacity: 1, x: 0, transition: { delay: 0.5 } }}
+								className={`flex flex-col items-end gap-1 ${timeLeft <= 6 ? 'text-red-300' : 'text-slate-200'}`}
+							>
+								{clock === 1 ? (
+									<Clock1 className={`h-5 w-5 stroke-2`} />
+								) : clock === 2 ? (
+									<Clock2 className={`h-5 w-5 stroke-2`} />
+								) : clock === 3 ? (
+									<Clock3 className={`h-5 w-5 stroke-2`} />
+								) : clock === 4 ? (
+									<Clock4 className={`h-5 w-5 stroke-2`} />
+								) : clock === 5 ? (
+									<Clock5 className={`h-5 w-5 stroke-2`} />
+								) : clock === 6 ? (
+									<Clock6 className={`h-5 w-5 stroke-2`} />
+								) : clock === 7 ? (
+									<Clock7 className={`h-5 w-5 stroke-2`} />
+								) : clock === 8 ? (
+									<Clock8 className={`h-5 w-5 stroke-2`} />
+								) : clock === 9 ? (
+									<Clock9 className={`h-5 w-5 stroke-2`} />
+								) : clock === 10 ? (
+									<Clock10 className={`h-5 w-5 stroke-2`} />
+								) : clock === 11 ? (
+									<Clock11 className={`h-5 w-5 stroke-2`} />
+								) : clock === 12 ? (
+									<Clock12 className={`h-5 w-5 stroke-2`} />
+								) : (
+									<Clock2 className={`h-5 w-5 stroke-2`} />
+								)}
+								<p className={`text-xs font-semibold ${timeLeft <= 6 ? 'text-red-400' : 'text-slate-300'}`}>
+									{timeLeft} {timeLeft === 1 ? 'time' : 'timer'} tilbage
+								</p>
+							</motion.div>
 						)}
-						<p className={`text-xs font-semibold ${timeLeft <= 6 ? 'text-red-400' : 'text-slate-300'}`}>
-							{timeLeft} {timeLeft === 1 ? 'time' : 'timer'} tilbage
-						</p>
-					</div>
+					</AnimatePresence>
 				</header>
 				<div className='grid gap-6'>
 					<ReportInput type='hours' reportValue={data?.report.hours} value={hours} setValue={setHours} />

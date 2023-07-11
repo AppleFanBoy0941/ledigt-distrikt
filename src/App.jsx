@@ -6,6 +6,7 @@ import SiteLoader from './components/loaders/SiteLoader'
 import Layout from './Layout'
 import UpdateProvider from './contexts/UpdateProvider'
 import useLocalStorage from './hooks/useLocalStorage'
+import GlobalReports from './pages/GlobalReports'
 
 const SignIn = React.lazy(() => import('./pages/SignIn'))
 const Home = React.lazy(() => import('./pages/Home'))
@@ -36,6 +37,10 @@ function App() {
 				{
 					path: '/profil/opret-bruger',
 					element: <CreateUser />,
+				},
+				{
+					path: '/samlede-rapporter',
+					element: <GlobalReports />,
 				},
 				{
 					path: '/brugere',

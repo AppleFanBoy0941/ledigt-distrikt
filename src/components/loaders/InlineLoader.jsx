@@ -1,4 +1,4 @@
-import { easeOut, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 export default function InlineLoader({ color, small }) {
 	return (
